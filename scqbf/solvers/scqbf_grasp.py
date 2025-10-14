@@ -39,7 +39,7 @@ class GraspStrategy:
     """
     construction_method: Literal['traditional', 'random_plus_greedy', 'sampled_greedy'] = 'traditional'
     local_search_method: Literal['best_improve', 'first_improve'] = 'best_improve'
-    alpha: Optional[float] = None
+    alpha: Optional[float] = 0.5
     p: Optional[float] = None
     
     def __post_init__(self):
@@ -76,7 +76,7 @@ class GraspStrategy:
 
 class ScQbfGrasp(SCQBF_Solver):
     
-    def __init__(self, instance: ScQbfInstance, strategy: GraspStrategy = GraspStrategy(),
+    def __init__(self, instance: ScQbfInstance, strategy: GraspStrategy = GraspStrategy(construction_method="traditional", local_search_method="best_improve", alpha=0.5, p=None),
                  termination_criteria: TerminationCriteria = TerminationCriteria(),
                  debug_options: DebugOptions = DebugOptions()):
         
@@ -92,7 +92,7 @@ class ScQbfGrasp(SCQBF_Solver):
         
         while not self._check_termination():
             self._perform_debug_actions()
-            
+
             constructed_sol = self._constructive_heuristic()
             
             if self.debug_options.verbose:
@@ -104,6 +104,7 @@ class ScQbfGrasp(SCQBF_Solver):
                 constructed_sol = self._fix_solution(constructed_sol)
             
             self._current_solution = self._local_search(constructed_sol)
+ 
             
             self._update_execution_state()
         
@@ -325,7 +326,7 @@ class ScQbfGrasp(SCQBF_Solver):
             improvement_found = False
             
             cl = [i for i in range(self.instance.n) if i not in sol.elements]
-
+            random.shuffle(cl)  # Randomize candidate list to avoid bias
             # Evaluate insertions
             for cand_in in cl:
                 delta = self.evaluator.evaluate_insertion_delta(cand_in, sol)

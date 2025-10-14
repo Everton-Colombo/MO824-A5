@@ -10,8 +10,8 @@ class ScQbfEvaluator:
         if self.problem_instance is None:
             raise ValueError("Problem instance is not initialized")
         
-        if solution._objfun_val != None:
-            return solution._objfun_val
+        if solution.objfun_val != None:
+            return solution.objfun_val
         
         A = self.problem_instance.A
         total = 0.0
@@ -21,7 +21,7 @@ class ScQbfEvaluator:
             for j in solution.elements:
                 total += A[i][j]
 
-        solution._objfun_val = total
+        solution.objfun_val = total
         return total
 
     def _evaluate_element_contribution(self, elem: int, solution: ScQbfSolution) -> float:
