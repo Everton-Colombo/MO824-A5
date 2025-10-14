@@ -63,7 +63,8 @@ class SCQBF_Solver(ABC):
         if self.termination_criteria.max_time_secs is not None and (time.time() - self._start_time) >= self.termination_criteria.max_time_secs:
             self.stop_reason = "max_time_secs"
             return True
-        if self.termination_criteria.target_value is not None and self.best_solution is not None and self.best_solution.value >= self.termination_criteria.target_value:
+        if self.termination_criteria.target_value is not None and self.best_solution is not None and \
+                self.evaluator.evaluate_objfun(self.best_solution) >= self.termination_criteria.target_value:
             self.stop_reason = "target_value"
             return True
         return False
