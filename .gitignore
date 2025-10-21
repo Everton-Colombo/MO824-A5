@@ -37,3 +37,10 @@ build/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# more
+bin/
+share/
+pickles/
+lib/
+pyvenv.cfg
