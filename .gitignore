@@ -41,6 +41,5 @@ Thumbs.db
 # more
 bin/
 share/
-pickles/
 lib/
 pyvenv.cfg
